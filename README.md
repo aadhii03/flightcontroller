@@ -1,16 +1,16 @@
-# STM32 Flight Controller
-This repository contains the development of an STM32-based flight controller designed for drones and other UAVs. The project leverages the STM32F103 microcontroller and is developed using both the Arduino IDE and PlatformIO. The flight controller integrates essential components such as the MPU6050 for gyroscope and accelerometer data, ExpressLRS for radio communication, and a custom PID loop for attitude control. The goal is to create a lightweight, efficient, and highly responsive flight control system.
+# STM32 Flight Controller 🚀
+This repository hosts an STM32F103-based flight controller for drones, featuring MPU6050, ExpressLRS, PID control, and motor mixing. Built with Arduino IDE & PlatformIO for lightweight, efficient UAV control.
 
-## Key Features
-- MPU6050: Utilizes the MPU6050 sensor for accurate gyroscope and accelerometer data.
-- ExpressLRS Communication: Implements ExpressLRS as the radio receiver with Crossfire (CRSF) as the communication protocol for low-latency control.
-- PID Loop: A custom PID control loop for stable and precise attitude control.
-- Motor Mixing: Generates motor signals through motor mixing based on processed PID values.
-- Bit Banging: Uses bit banging for faster pin control and improved cycle times.
-- Profiling: Includes a profiler to monitor and optimize software performance metrics.
+## Key Features ✨
+- MPU6050: Gyroscope & accelerometer for precise motion tracking.
+- ExpressLRS: Low-latency radio communication with Crossfire (CRSF).
+- PID Loop: Custom control loop for stable flight.
+- Motor Mixing: Generates motor signals from PID outputs.
+- Bit Banging: Faster pin control for improved performance.
+- Profiling: Optimizes software metrics for efficiency.
 
-## Development Notes
-- [x] success compile STM32F103 in Arduino IDE & PlatformIO
+## Development Notes ⚙️
+- [x] compile STM32F103 project in Arduino IDE & PlatformIO
 - [x] basic functions running: MPU6050, ELRS
 - [ ] PID loop, bit banging
 - [ ] motor mixer, motor PWM control
@@ -18,7 +18,7 @@ This repository contains the development of an STM32-based flight controller des
 - [ ] LED indicator
 - [ ] more control functions
 
-## Requirements
+## Requirements 🗒️
 - Uses MPU6050 as gyro & accelerometer
 - Does bit banging as means of setting pins for faster cycle time
 - Uses ExpressLRS as radio reciever and crossfire as communication protocol
