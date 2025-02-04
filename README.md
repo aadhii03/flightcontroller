@@ -1,5 +1,5 @@
 # STM32 Flight Controller 🚀
-This repository hosts an STM32F103-based flight controller for drones, featuring MPU6050, ExpressLRS, PID control, and motor mixing. Built with Arduino IDE & PlatformIO for lightweight, efficient UAV control.
+This repository hosts an STM32F103-based flight controller for drones, featuring MPU6050, ExpressLRS, PID control, and motor mixing. Built with PlatformIO for lightweight, efficient UAV control.
 
 ## Key Features ✨
 - MPU6050: Gyroscope & accelerometer for precise motion tracking.
