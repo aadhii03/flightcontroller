@@ -1,6 +1,14 @@
 # STM32 Flight Controller
 
-# Requirements
+## Development Notes
+- basic functions running: MPU6050, ELRS
+- PID loop
+- motor mixer
+- motor PWM control
+- LED indicator
+- more control functions
+
+## Requirements
 - Uses MPU6050 as gyro & accelerometer
 - Does bit banging as means of setting pins for faster cycle time
 - Uses ExpressLRS as radio reciever and crossfire as communication protocol
