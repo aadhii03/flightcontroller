@@ -9,19 +9,15 @@ This repository hosts an STM32F103-based flight controller for drones, featuring
 - Bit Banging: Faster pin control for improved performance.
 - Profiling: Optimizes software metrics for efficiency.
 
-## Development Notes ⚙️
-- [x] compile STM32F103 project in Arduino IDE & PlatformIO
-- [x] basic functions running: MPU6050, ELRS
-- [ ] PID loop, bit banging
-- [ ] motor mixer, motor PWM control
-- [ ] loop optimization
-- [ ] LED indicator
-- [ ] more control functions
-
 ## Requirements 🗒️
 - Uses MPU6050 as gyro & accelerometer
 - Does bit banging as means of setting pins for faster cycle time
-- Uses ExpressLRS as radio reciever and crossfire as communication protocol
+- Uses IBUS as radio reciever
 - Implements PID loop to control attitude
 - Generates motor signals through motor mixing from processed values from PID loop
 - Implements profiler to detect software metrics
+
+## To do 
+- [] change ELRS to IBUS
+- [] add GPS
+- [] add PID

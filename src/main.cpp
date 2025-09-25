@@ -15,16 +15,20 @@ void gyroLoop();
 void gyroValuePrint();
 
 // ELRS
-#include <crsf.h>
-#define ELRS_INTERVAL 50
-#define RXD2 16
-#define TXD2 17
-#define SBUS_BUFFER_SIZE 25
-uint8_t _rcs_buf[25] {};
-uint16_t _raw_rc_values[RC_INPUT_MAX_CHANNELS] {};
-uint16_t _raw_rc_count{};
-HardwareSerial Serial3(PB11, PB10);
-void elrsLoop();
+// #include <crsf.h>
+// #define ELRS_INTERVAL 50
+// #define RXD2 16
+// #define TXD2 17
+// #define SBUS_BUFFER_SIZE 25
+// uint8_t _rcs_buf[25] {};
+// uint16_t _raw_rc_values[RC_INPUT_MAX_CHANNELS] {};
+// uint16_t _raw_rc_count{};
+// HardwareSerial Serial3(PB11, PB10);
+// void elrsLoop();
+
+// IBUS
+#include <ibus.h>
+IBUS ibus (&Serial1, 115200);
 
 // PWM
 void setPWMPosAll(int const aileronsMapped, int const elevatorMapped, int const throttleMapped, int const rudderMapped, int const switchMapped);
@@ -34,9 +38,8 @@ void setPWMPos(float percent, int pwmChannel);
 // =====================================
 
 void setup() {
-  Serial.begin(460800);
-  Serial.println("Setup Start!");
-  Serial3.begin(420000, SERIAL_8N1);
+  Serial.begin(115200);
+
 
   // LED
   pinMode(PC13, OUTPUT);
@@ -54,41 +57,56 @@ void setup() {
 
 void loop() {
   gyroLoop();
-  elrsLoop();
+  // elrsLoop();
+  ibusLoop();
   ledToggleLoop();
 }
 
 // =====================================
 
 // ELRS ----------------------------
-long elrsNextTime = 0;
+// long elrsNextTime = 0;
 
-void elrsLoop() {
-  if (Serial3.available() && (millis() > elrsNextTime)) {
-    size_t numBytesRead = Serial3.readBytes(_rcs_buf, SBUS_BUFFER_SIZE);
-    if(numBytesRead > 0) {
-      crsf_parse(&_rcs_buf[0], SBUS_BUFFER_SIZE, &_raw_rc_values[0], &_raw_rc_count, RC_INPUT_MAX_CHANNELS );
+// void elrsLoop() {
+//   if (Serial3.available() && (millis() > elrsNextTime)) {
+//     size_t numBytesRead = Serial3.readBytes(_rcs_buf, SBUS_BUFFER_SIZE);
+//     if(numBytesRead > 0) {
+//       crsf_parse(&_rcs_buf[0], SBUS_BUFFER_SIZE, &_raw_rc_values[0], &_raw_rc_count, RC_INPUT_MAX_CHANNELS );
 
-      int aileronsMapped = map(_raw_rc_values[0], 1000, 2000, 0, 100);
-      int elevatorMapped = map(_raw_rc_values[1], 1000, 2000, 0, 100);
-      int throttleMapped = map(_raw_rc_values[2], 1000, 2000, 0, 100);
-      int rudderMapped = map(_raw_rc_values[3], 1000, 2000, 0, 100);
-      int switchMapped = map(_raw_rc_values[4], 1000, 2000, 0, 100);
+//       int aileronsMapped = map(_raw_rc_values[0], 1000, 2000, 0, 100);
+//       int elevatorMapped = map(_raw_rc_values[1], 1000, 2000, 0, 100);
+//       int throttleMapped = map(_raw_rc_values[2], 1000, 2000, 0, 100);
+//       int rudderMapped = map(_raw_rc_values[3], 1000, 2000, 0, 100);
+//       int switchMapped = map(_raw_rc_values[4], 1000, 2000, 0, 100);
 
-      Serial.printf(
-        "CH1: %d (Ail: %d); CH2: %d (Ele: %d); CH3: %d (Thr: %d); CH4: %d (Rud: %d);  CH5: %d (Swt: %d);",
-        _raw_rc_values[0], aileronsMapped,
-        _raw_rc_values[1], elevatorMapped,
-        _raw_rc_values[2], throttleMapped,
-        _raw_rc_values[3], rudderMapped,
-        _raw_rc_values[4], switchMapped
-      );
+//       Serial.printf(
+//         "CH1: %d (Ail: %d); CH2: %d (Ele: %d); CH3: %d (Thr: %d); CH4: %d (Rud: %d);  CH5: %d (Swt: %d);",
+//         _raw_rc_values[0], aileronsMapped,
+//         _raw_rc_values[1], elevatorMapped,
+//         _raw_rc_values[2], throttleMapped,
+//         _raw_rc_values[3], rudderMapped,
+//         _raw_rc_values[4], switchMapped
+//       );
 
-      setPWMPosAll(aileronsMapped, elevatorMapped, throttleMapped, rudderMapped, switchMapped);
-    }
+//       setPWMPosAll(aileronsMapped, elevatorMapped, throttleMapped, rudderMapped, switchMapped);
+//     }
 
-    elrsNextTime = millis() + ELRS_INTERVAL;
-  }
+//     elrsNextTime = millis() + ELRS_INTERVAL;
+//   }
+// }
+
+// IBUS
+
+void ibusLoop(){
+  ibus.update();
+
+  int aileronMapped = map(ibus.channels[0], 1000, 2000, 0, 100);
+  int elevatorMapped = map(ibus.channels[1], 1000, 2000, 0, 100);
+  int throttleMapped = map(ibus.channels[2], 1000, 2000, 0, 100);
+  int rudderMapped = map(ibus.channels[3], 1000, 2000, 0, 100);
+  int switchMapped = map(ibus.channels[4], 1000, 2000, 0, 100);
+
+  setPWMPosAll(aileronMapped, elevatorMapped, throttleMapped, rudderMapped, switchMapped);
 }
 
 // GYRO ----------------------------
